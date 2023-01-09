@@ -2,19 +2,13 @@ pipeline{
     agent any
 
     tools {
-         maven 'maven'
-         jdk 'java'
-    }
-
+         maven "3.8.6"
+         }
     stages{
-        stage('checkout'){
+         stage('build'){
             steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github access', url: 'https://github.com/sreenivas449/java-hello-world-with-maven.git']]])
-            }
-        }
-        stage('build'){
-            steps{
-               bat 'mvn package'
+               sh "mvn clean package -DskipTests=true"
+               archive 'target/*.jar'
             }
         }
     }
